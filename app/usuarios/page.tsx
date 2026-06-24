@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { NavegacaoApp } from "@/components/navegacao-app";
+import { podeGerenciarUsuarios } from "@/lib/auth/permissoes";
 import { obterConfiguracaoSupabase } from "@/lib/env";
 import { criarClienteSupabaseBrowser } from "@/lib/supabase/browser";
 import type { PapelSistema, UsuarioSistema } from "@/types";
@@ -15,6 +16,7 @@ export default function PaginaUsuarios(): JSX.Element {
   const configuracao = useMemo(() => obterConfiguracaoSupabase(), []);
   const [usuarios, setUsuarios] = useState<UsuarioSistema[]>([]);
   const [perfis, setPerfis] = useState<PapelSistema[]>([]);
+  const [usuarioAtual, setUsuarioAtual] = useState<UsuarioSistema | null>(null);
   const [estado, setEstado] = useState<EstadoTela>("carregando");
   const [mensagem, setMensagem] = useState<string | null>(null);
   const [salvando, setSalvando] = useState(false);
@@ -50,6 +52,27 @@ export default function PaginaUsuarios(): JSX.Element {
     const cabecalhos = {
       Authorization: `Bearer ${token}`
     };
+
+    const respostaUsuario = await fetch("/api/me", { headers: cabecalhos });
+    const corpoUsuario = (await respostaUsuario.json()) as {
+      usuario?: UsuarioSistema;
+      mensagem?: string;
+    };
+
+    if (!respostaUsuario.ok || !corpoUsuario.usuario) {
+      setEstado("erro");
+      setMensagem(corpoUsuario.mensagem ?? "Nao foi possivel carregar usuario.");
+      return;
+    }
+
+    const perfil = corpoUsuario.usuario.role?.perfil;
+    setUsuarioAtual(corpoUsuario.usuario);
+
+    if (!perfil || !podeGerenciarUsuarios(perfil)) {
+      setEstado("erro");
+      setMensagem("Somente administradores podem gerenciar usuarios.");
+      return;
+    }
 
     const [respostaUsuarios, respostaPerfis] = await Promise.all([
       fetch("/api/usuarios", { headers: cabecalhos }),
@@ -142,6 +165,8 @@ export default function PaginaUsuarios(): JSX.Element {
     }
   }
 
+  const perfilAtual = usuarioAtual?.role?.perfil;
+
   return (
     <main className="min-h-screen bg-fundo text-texto">
       <header className="border-b bg-white">
@@ -161,7 +186,7 @@ export default function PaginaUsuarios(): JSX.Element {
         </div>
       </header>
 
-      <NavegacaoApp perfil="administrador" />
+      <NavegacaoApp perfil={perfilAtual} />
 
       <section className="mx-auto grid max-w-7xl gap-6 px-6 py-6 lg:grid-cols-[360px_1fr]">
         <form className="rounded-md border bg-white p-5" onSubmit={criarUsuario}>

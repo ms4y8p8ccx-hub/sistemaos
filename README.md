@@ -88,6 +88,17 @@ RESEND_FROM_EMAIL
 
 Marque as variaveis para `Production` e `Preview`. Depois de alterar variaveis de ambiente na Vercel, faca um novo deploy para elas entrarem em vigor.
 
+## Checklist pos-deploy
+
+Depois que o site estiver no ar:
+
+1. Teste login, dashboard, clientes, equipamentos, OS, estoque e financeiro na URL da Vercel.
+2. Configure o dominio proprio em `Project Settings > Domains` na Vercel.
+3. No provedor do dominio, aponte o DNS conforme a Vercel informar.
+4. No Supabase, revise `Authentication > URL Configuration` e inclua a URL de producao como URL do site.
+5. Se usar e-mail transacional, configure `RESEND_API_KEY` e `RESEND_FROM_EMAIL` na Vercel e faca novo deploy.
+6. Crie usuarios reais em `/usuarios` e revise os perfis antes de liberar para a equipe.
+
 ## Comandos de validacao
 
 Antes de publicar alteracoes relevantes:
