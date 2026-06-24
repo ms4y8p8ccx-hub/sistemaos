@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --fundo: 0 0% 100%;
+  --texto: 222.2 84% 4.9%;
+  --borda: 214.3 31.8% 91.4%;
+  --entrada: 214.3 31.8% 91.4%;
+  --anel: 142.1 76.2% 36.3%;
+  --primario: 142.1 70.6% 45.3%;
+  --primario-texto: 144.9 80.4% 10%;
+  --secundario: 210 40% 96.1%;
+  --secundario-texto: 222.2 47.4% 11.2%;
+  --alerta: 0 84.2% 60.2%;
+  --alerta-texto: 210 40% 98%;
+  --suave: 210 40% 96.1%;
+  --suave-texto: 215.4 16.3% 46.9%;
+  --raio: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--borda));
+}
+
+body {
+  background: hsl(var(--fundo));
+  color: hsl(var(--texto));
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  outline-color: hsl(var(--primario));
+}
+
+@media print {
+  body {
+    background: white;
+  }
+}

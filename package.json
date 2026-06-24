@@ -1,0 +1,34 @@
+{
+  "name": "gestao-os-agricola",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:300": "next dev --hostname 127.0.0.1 --port 300",
+    "build": "next build",
+    "lint": "eslint app components lib types --ext .ts,.tsx --no-error-on-unmatched-pattern",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Nenhum teste configurado ainda\""
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.5.1",
+    "@supabase/supabase-js": "^2.85.0",
+    "next": "^14.2.32",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^3.9.0",
+    "resend": "^6.14.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.25",
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.3.7",
+    "autoprefixer": "^10.4.23",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.32",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3"
+  }
+}
